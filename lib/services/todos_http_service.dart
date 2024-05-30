@@ -44,4 +44,10 @@ class TodosHttpService {
     Todo newTodo = Todo.fromJson(todoData);
     return newTodo;
   }
+
+  Future<void> deleteTodo(String id) async {
+    Uri url = Uri.parse(
+        "https://flutter-day-26-default-rtdb.firebaseio.com/todos/$id.json");
+    await http.delete(url);
+  }
 }

@@ -18,4 +18,8 @@ class TodosRepository {
         title: title, date: date, isDone: isDone);
     return newTodo;
   }
+
+  Future<void> deleteTodo(String id) async {
+    await todosHttpService.deleteTodo(id);
+  }
 }

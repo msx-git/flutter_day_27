@@ -21,4 +21,9 @@ class TodosViewModel {
         await todosRepository.addTodo(title: title, date: date, isDone: isDone);
     _list.add(newTodo);
   }
+
+  Future<void> deleteTodo(String id) async {
+    await todosRepository.deleteTodo(id);
+    _list.removeWhere((todo) => todo.id == id);
+  }
 }

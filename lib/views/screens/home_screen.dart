@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_day_27/viewmodels/todos_viewmodel.dart';
 import 'package:intl/intl.dart';
 
+import '../../models/todo.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -12,6 +14,36 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final todosViewmodel = TodosViewModel();
+
+  void deleteTodo(Todo todo) async {
+    final response = await showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          title: const Text("Deleting todo"),
+          content: Text("You are deleting [ ${todo.title} ] todo!"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: const Text("Cancel"),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: Colors.redAccent.withOpacity(0.7),
+              ),
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text("Yes, delete it."),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (response) {
+      await todosViewmodel.deleteTodo(todo.id);
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +100,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                deleteTodo(todo);
+                              },
                               icon: const Icon(
                                 CupertinoIcons.delete_simple,
                                 color: Colors.redAccent,
