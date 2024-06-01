@@ -4,6 +4,7 @@ import 'package:flutter_day_27/viewmodels/todos_viewmodel.dart';
 import 'package:intl/intl.dart';
 
 import '../../models/todo.dart';
+import '../widgets/manage_todo_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,6 +43,27 @@ class _HomeScreenState extends State<HomeScreen> {
     if (response) {
       await todosViewmodel.deleteTodo(todo.id);
       setState(() {});
+    }
+  }
+
+  void addTodo() async {
+    final data = await showDialog(
+      context: context,
+      builder: (ctx) {
+        return const ManageTodoDialog();
+      },
+    );
+    if (data != null) {
+      try {
+        todosViewmodel.addTodo(
+          title: data['title'],
+          date: data['date'],
+          isDone: data['isDone'],
+        );
+        setState(() {});
+      } catch (e) {
+        print(e);
+      }
     }
   }
 
@@ -118,12 +140,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await todosViewmodel.addTodo(
-            title: "title",
-            date: "${DateTime.now()}",
-            isDone: false,
-          );
-          setState(() {});
+          // await todosViewmodel.addTodo(
+          //   title: "New Todo",
+          //   date: "${DateTime.now()}",
+          //   isDone: false,
+          // );
+          // setState(() {});
+           addTodo();
         },
         child: const Icon(CupertinoIcons.add),
       ),

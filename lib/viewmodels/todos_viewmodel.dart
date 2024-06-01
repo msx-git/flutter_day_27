@@ -22,6 +22,15 @@ class TodosViewModel {
     _list.add(newTodo);
   }
 
+  Future<void> editTodo({
+    required String id,
+    required String title,
+    required String date,
+    required bool isDone,
+  }) async{
+
+  }
+
   Future<void> deleteTodo(String id) async {
     await todosRepository.deleteTodo(id);
     _list.removeWhere((todo) => todo.id == id);
